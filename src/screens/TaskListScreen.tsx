@@ -4,13 +4,22 @@ import {
   StyleSheet,
   FlatList,
   Alert,
+  Image,
 } from 'react-native';
 import { api, Task } from '../services/api';
 import { colors } from '../constants/colors';
 import { Button } from '../common/Button';
 import { Input } from '../common/Input';
 import { Card } from '../common/Card';
-import { icons } from '../assets/icons';
+
+// Import PNG images
+const icons = {
+  check: require('../assets/images/check.png'),
+  uncheck: require('../assets/images/uncheck.png'),
+  delete: require('../assets/images/delete.png'),
+  edit: require('../assets/images/edit.png'),
+  add: require('../assets/images/add.png'),
+};
 
 export const TaskListScreen = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -79,7 +88,10 @@ export const TaskListScreen = () => {
           size="small"
           style={styles.checkButton}
         >
-          {item.completed ? icons.check({}) : icons.uncheck({})}
+          <Image 
+            source={item.completed ? icons.check : icons.uncheck}
+            style={styles.icon}
+          />
         </Button>
         <View style={styles.taskText}>
           <Input
@@ -101,7 +113,10 @@ export const TaskListScreen = () => {
           size="small"
           style={styles.deleteButton}
         >
-          {icons.delete({})}
+          <Image 
+            source={icons.delete}
+            style={styles.icon}
+          />
         </Button>
       </View>
     </Card>
@@ -115,7 +130,7 @@ export const TaskListScreen = () => {
           placeholder="Enter task title"
           value={title}
           onChangeText={setTitle}
-          leftIcon={icons.edit({})}
+          leftIcon={<Image source={icons.edit} style={styles.icon} />}
         />
         <Input
           label="Description (Optional)"
@@ -124,13 +139,13 @@ export const TaskListScreen = () => {
           onChangeText={setDescription}
           multiline
           numberOfLines={3}
-          leftIcon={icons.edit({})}
+          leftIcon={<Image source={icons.edit} style={styles.icon} />}
         />
         <Button
           title="Add Task"
           onPress={handleAddTask}
           loading={loading}
-          leftIcon={icons.add({})}
+          leftIcon={<Image source={icons.add} style={styles.icon} />}
         />
       </Card>
       <FlatList
@@ -186,5 +201,10 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     padding: 8,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
   },
 }); 
